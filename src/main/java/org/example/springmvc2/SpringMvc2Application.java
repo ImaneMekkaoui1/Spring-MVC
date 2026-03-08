@@ -11,10 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 
-@SpringBootApplication(exclude = {
-        SecurityAutoConfiguration.class,
-        SecurityFilterAutoConfiguration.class
-})
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,SecurityFilterAutoConfiguration.class})
+
+@SpringBootApplication
 public class SpringMvc2Application {
 
     public static void main(String[] args) {
