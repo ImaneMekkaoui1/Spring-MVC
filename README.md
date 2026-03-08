@@ -16,7 +16,7 @@ L’interface utilisateur est développée avec **Thymeleaf et Bootstrap**, perm
 
 ---
 
-# 🛠️ Technologies Utilisées
+#  Technologies Utilisées
 
 ## Backend
 - **Java 17+**
