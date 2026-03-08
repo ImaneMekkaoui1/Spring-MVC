@@ -1,1 +1,208 @@
- TP2 - Sécurisation d'une Application Web avec Spring Security & Spring MVCAuteur : Imane MekkaouiCadre : Travail Pratique (TP2) - Développement Web Avancé📝 Description du ProjetCe projet est une application web de gestion de stock (produits) développée avec Spring Boot et Spring MVC. L'objectif principal de ce TP est la mise en œuvre de Spring Security pour sécuriser les routes de l'application, gérer l'authentification des utilisateurs, appliquer des autorisations basées sur les rôles (RBAC) et concevoir une interface utilisateur dynamique avec Thymeleaf et Bootstrap 5.Shutterstock🛠️ Technologies UtiliséesBackend : Java 17+, Spring Boot (Web, Data JPA, Security, Validation)Frontend : Thymeleaf (avec Layout Dialect et Security Extras), HTML5, CSS3, Bootstrap 5.3.8, Bootstrap IconsBase de données : H2 Database (en mémoire)Outils : Maven, IntelliJ IDEA, Git🚀 Fonctionnalités Implémentées1. Sécurité et Contrôle d'Accès (Spring Security)Authentification en mémoire (In-Memory) : Configuration de plusieurs utilisateurs avec des mots de passe encodés via BCryptPasswordEncoder.Gestion des Rôles :USER : Peut uniquement consulter la liste des produits et effectuer des recherches.ADMIN : Possède tous les droits (Lecture, Ajout, Modification, Suppression).Sécurisation des routes HTTP :/admin/** : Accès restreint au rôle ADMIN./user/** : Accès autorisé aux rôles USER et ADMIN.Protection CSRF : Activée par défaut pour sécuriser les formulaires (POST, DELETE).Gestion des exceptions : Redirection vers une page personnalisée (/notAuthorized) en cas de tentative d'accès non autorisé (Erreur 403).2. Gestion des Produits (Opérations CRUD)Create : Formulaire d'ajout de produit avec validation des données côté serveur (@Valid, BindingResult).Read : Affichage de la liste des produits sous forme de tableau interactif.Update : Formulaire de modification pré-rempli avec utilisation de champs cachés (input type="hidden") pour l'ID.Delete : Suppression d'un produit avec demande de confirmation JavaScript pour éviter les erreurs de manipulation.Recherche : Barre de recherche permettant de filtrer les produits par nom (requête générée dynamiquement via Spring Data JPA findByNameContains).3. Interface Utilisateur (UI/UX)Système de Layout (Thymeleaf Layout) : Utilisation d'un gabarit central (layout1.html) avec barre de navigation dynamique (affichage du nom de l'utilisateur connecté et déconnexion).Notifications (Flash Messages) : Implémentation de RedirectAttributes pour afficher des alertes Bootstrap éphémères de succès après une action (ajout, modification, suppression).Design Professionnel : Utilisation de composants Bootstrap avancés (Cards, Badges, Tableaux responsives table-hover, ombres shadow-sm).⚙️ Configuration Technique SpécifiqueIntégration Sécurisée de la Console H2L'un des défis techniques de ce TP a été de maintenir une sécurité globale optimale tout en permettant l'accès à la console de base de données H2 en phase de développement.La classe SecurityConfig a été optimisée ainsi :Désactivation ciblée du CSRF uniquement pour l'URL /h2-console/**.Autorisation des Frames HTML (nécessaire à l'interface de H2) pour éviter le blocage anti-Clickjacking.🔑 Comptes de Test (Authentification)Pour tester l'application, vous pouvez utiliser les identifiants suivants :Nom d'utilisateurMot de passeRôle(s)Droitsadmin1234ADMIN, USERTotaux (CRUD complet)user11234USERLecture & Recherche uniquementuser21234USERLecture & Recherche uniquement💻 Comment exécuter le projet localement ?Cloner ce dépôt : git clone [URL_DU_DEPOT]Ouvrir le projet dans un IDE (IntelliJ IDEA, Eclipse, etc.).Mettre à jour les dépendances Maven.Lancer la classe principale contenant @SpringBootApplication.Accéder à l'application via : http://localhost:8094/ (le port peut différer selon votre application.properties).Accéder à la base de données H2 via : http://localhost:8094/h2-console (JDBC URL: jdbc:h2:mem:testdb).
+# TP2 – Sécurisation d'une Application Web avec Spring Security & Spring MVC
+
+## Auteur
+**Imane Mekkaoui**
+
+## Cadre
+Travail Pratique (TP2) – Développement Web Avancé
+
+---
+
+#  Description du Projet
+
+Ce projet consiste à développer une **application web de gestion de stock de produits** en utilisant **Spring Boot et Spring MVC**, avec un accent particulier sur la **sécurisation de l’application via Spring Security**.
+
+L’objectif principal de ce travail pratique est d’illustrer les mécanismes fondamentaux de sécurité dans les applications web modernes, notamment :
+
+- l’authentification des utilisateurs
+- la gestion des rôles et autorisations (RBAC)
+- la protection contre les attaques courantes
+- la sécurisation des routes HTTP
+
+L’interface utilisateur est développée avec **Thymeleaf et Bootstrap**, permettant de créer une application dynamique, responsive et ergonomique.
+
+---
+
+# 🛠️ Technologies Utilisées
+
+## Backend
+- **Java 17+**
+- **Spring Boot**
+- Spring MVC
+- Spring Data JPA
+- Spring Security
+- Spring Validation
+
+## Frontend
+- **Thymeleaf**
+- Thymeleaf Layout Dialect
+- Thymeleaf Security Extras
+- **HTML5**
+- **CSS3**
+- **Bootstrap 5**
+- **Bootstrap Icons**
+
+## Base de données
+- **H2 Database (Base en mémoire)**
+
+## Outils de développement
+- **Maven**
+- **IntelliJ IDEA**
+- **Git / GitHub**
+
+---
+
+#  Fonctionnalités Implémentées
+
+##  Sécurité et Contrôle d’Accès (Spring Security)
+
+L'application implémente un système complet de sécurité basé sur **Spring Security**.
+
+### Authentification
+- Authentification **In-Memory**
+- Encodage des mots de passe avec **BCryptPasswordEncoder**
+
+### Gestion des rôles (RBAC)
+
+Deux rôles principaux sont définis :
+
+#### USER
+Peut :
+- consulter la liste des produits
+- effectuer des recherches
+
+#### ADMIN
+Peut :
+- consulter les produits
+- ajouter un produit
+- modifier un produit
+- supprimer un produit
+
+### Sécurisation des routes
+
+| Route | Accès |
+|------|------|
+| `/admin/**` | ADMIN uniquement |
+| `/user/**` | USER et ADMIN |
+
+### Protection CSRF
+La protection **CSRF** est activée par défaut pour sécuriser les formulaires et les requêtes sensibles.
+
+### Gestion des exceptions
+En cas d’accès non autorisé :
+
+- l’utilisateur est redirigé vers une **page personnalisée d’erreur (403)**.
+
+---
+
+#  Gestion des Produits (CRUD)
+
+L'application permet de gérer les produits à travers les opérations CRUD classiques.
+
+## Create – Ajouter un produit
+- Formulaire sécurisé
+- Validation des données côté serveur avec :
+  - `@Valid`
+  - `BindingResult`
+
+## Read – Afficher les produits
+- Tableau dynamique
+- Interface responsive avec Bootstrap
+
+## Update – Modifier un produit
+- Formulaire pré-rempli
+- Utilisation de champs cachés pour l’identifiant
+
+## Delete – Supprimer un produit
+- Confirmation JavaScript pour éviter les suppressions accidentelles
+
+## Recherche de produits
+- Recherche par **nom**
+- Implémentée avec **Spring Data JPA**
+
+
+
+
+---
+
+#  Interface Utilisateur (UI / UX)
+
+## Système de Layout
+
+L'application utilise **Thymeleaf Layout Dialect** pour structurer l’interface :
+
+- un **layout principal**
+- des **vues dynamiques**
+
+Cela permet de réutiliser des composants communs comme :
+
+- la barre de navigation
+- le pied de page
+- les styles globaux
+
+---
+
+## Barre de Navigation Dynamique
+
+La navbar affiche :
+
+- le nom de l’utilisateur connecté
+- les options de navigation
+- l’option de déconnexion
+
+Grâce à **Thymeleaf Security Extras**.
+
+---
+
+## Notifications (Flash Messages)
+
+Les actions utilisateur déclenchent des **notifications Bootstrap** :
+
+- ajout réussi
+- modification réussie
+- suppression réussie
+
+Implémentées via :
+ RedirectAttributes
+
+
+---
+
+## Design
+
+Interface réalisée avec **Bootstrap** :
+
+- Cards
+- Badges
+- Tables responsives
+- Effets `shadow`
+- `table-hover`
+
+L’objectif est de produire une interface **claire, moderne et intuitive**.
+
+---
+
+#  Configuration Technique Spécifique
+
+## Accès à la Console H2 en mode développement
+
+Pour faciliter le développement, la console **H2 Database** est accessible tout en conservant un niveau de sécurité adéquat.
+
+La configuration de sécurité inclut :
+
+- désactivation ciblée du **CSRF uniquement pour la console H2**
+- autorisation des **frames HTML** nécessaires à l'interface H2
+
+Cette configuration permet d’éviter les blocages liés aux mécanismes de sécurité du navigateur (Clickjacking protection).
+
+---
+
+#  Tests de l’Application
+
+L’application intègre plusieurs profils utilisateurs permettant de tester :
+
+- l’authentification
+- les restrictions d’accès
+- les fonctionnalités CRUD selon les rôles
+
+---
