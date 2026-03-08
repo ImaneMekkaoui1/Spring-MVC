@@ -1,11 +1,4 @@
-# TP2 – Sécurisation d'une Application Web avec Spring Security & Spring MVC
-
-## Auteur
-**Imane Mekkaoui**
-
-## Cadre
-Travail Pratique (TP2) – Développement Web Avancé
-
+# Activité Pratique N°2 : Spring MVC - Spring Data JPA, Hibernate
 ---
 
 #  Description du Projet
